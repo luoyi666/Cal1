@@ -18,8 +18,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int MULTIPLY = 2;
     public static final int DIVIDE = 3;
     public int current0p = 0;    //用于接收以上四个整型常量
-    public double result1=0,result2=0;
+    public static double result1=0,result2=0;
     static Boolean flag1=true;  //用于标志输入负数时与减号的区别
+    static Boolean flag2=false;  //用于累加
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,20 +187,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 textView.setText("");
                 opEnd=false;
+                flag2=false;   //在累加过程中用户清零，则会把result1清零，因为result1是静态变量
             }
         });
 
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(textView.getText().toString()=="")
+                if(textView.getText().toString()==""||textView.getText().toString()=="-")
                 {
                     Toast.makeText(MainActivity.this,"请输入数字！",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    result1 = Double.parseDouble(textView.getText().toString());
-                    opEnd = false;
-                    current0p = PLUS;
+                    if(flag2==true)  //累加开始
+                    {
+                        result2=Double.parseDouble(textView.getText().toString());
+                        result1=result1+result2;
+                        opEnd = false;
+                        current0p = PLUS;
+                    }
+                    else {
+                        result1 = Double.parseDouble(textView.getText().toString());
+                        opEnd = false;
+                        current0p = PLUS;
+                        flag2 = true;
+                    }
                 }
             }
         });
@@ -232,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(textView.getText().toString()=="")
+                if(textView.getText().toString()==""||textView.getText().toString()=="-")
                 {
                     Toast.makeText(MainActivity.this,"请输入数字！",Toast.LENGTH_SHORT).show();
                 }
@@ -246,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(textView.getText().toString()=="")
+                if(textView.getText().toString()==""||textView.getText().toString()=="-")
                 {
                     Toast.makeText(MainActivity.this,"请输入数字！",Toast.LENGTH_SHORT).show();
                 }
@@ -261,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         point.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {  //小数点
-                if(textView.getText().toString()=="")
+                if(textView.getText().toString()==""||textView.getText().toString()=="-")
                 {
                     Toast.makeText(MainActivity.this,"请输入数字！",Toast.LENGTH_SHORT).show();
                 }
@@ -296,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         binary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {    //二进制转换事件
-                if(textView.getText().toString()=="")  //判断是否输入数字
+                if(textView.getText().toString()==""||textView.getText().toString()=="-")  //判断是否输入数字
                 {
                     Toast.makeText(MainActivity.this,"请输入数字！",Toast.LENGTH_SHORT).show();
                 }
@@ -328,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
         equal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {   //按键“=”的事件处理机制
-                if(textView.getText().toString()=="")
+                if(textView.getText().toString()==""||textView.getText().toString()=="-")
                 {
                     Toast.makeText(MainActivity.this,"请输入数字！",Toast.LENGTH_SHORT).show();
                 }
@@ -349,9 +361,16 @@ public class MainActivity extends AppCompatActivity {
                                 if (a == b) {   //判断结果是否为整数
                                     textView.setText(b + "");
                                 } else {
-                                    textView.setText(df.format(a));
+                                    if(a>0&&a<1)
+                                    {
+                                        textView.setText("0"+df.format(a));
+                                    }
+                                    else {
+                                        textView.setText(df.format(a));
+                                    }
                                 }
                                 current0p=6;  //用于当重复按“=”时跳转到6，使其数字不变
+                                flag2=false;
                                 break;
                             case MINUS:   //减法
                                 if (flag1 == false) {
@@ -363,7 +382,13 @@ public class MainActivity extends AppCompatActivity {
                                     if (a == b) {
                                         textView.setText(b + "");
                                     } else {
-                                        textView.setText(df.format(a));
+                                        if(a>0&&a<1)
+                                        {
+                                            textView.setText("0"+df.format(a));
+                                        }
+                                        else {
+                                            textView.setText(df.format(a));
+                                        }
                                     }
                                 }
                                 current0p=6;  //用于当重复按“=”时跳转到6，使其数字不变
@@ -374,7 +399,13 @@ public class MainActivity extends AppCompatActivity {
                                 if (a == b) {
                                     textView.setText(b + "");
                                 } else {
-                                    textView.setText(df.format(a));
+                                    if(a>0&&a<1)
+                                    {
+                                        textView.setText("0"+df.format(a));
+                                    }
+                                    else {
+                                        textView.setText(df.format(a));
+                                    }
                                 }
                                 current0p=6;  //用于当重复按“=”时跳转到6，使其数字不变
                                 break;
@@ -388,7 +419,13 @@ public class MainActivity extends AppCompatActivity {
                                 if (a == b) {
                                     textView.setText(b + "");
                                 } else {
-                                    textView.setText(df.format(a));
+                                    if(a>0&&a<1)
+                                    {
+                                        textView.setText("0"+df.format(a));
+                                    }
+                                    else {
+                                        textView.setText(df.format(a));
+                                    }
                                 }
                                 current0p=6;  //用于当重复按“=”时跳转到6，使其数字不变
                                 break;
